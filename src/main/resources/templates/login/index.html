@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <title>Index</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+</head>
+<body>
+<!--<div th:replace="fragments/header :: header">-->
+<div th:replace="fragments/header :: header">
+    <!-- ============================================================================ -->
+    <!-- This content is only used for static prototyping purposes (natural templates)-->
+    <!-- and is therefore entirely optional, as this markup fragment will be included -->
+    <!-- from "fragments/header.html" at runtime.                                     -->
+    <!-- ============================================================================ -->
+    <!--<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Static header</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>-->
+</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Hello Spring Security</h1>
+                <!--<div th:if="${pageContext.request.userPrincipal.name == null}">-->
+                <!--<th:if test="${pageContext.request.userPrincipal.name != null}">-->
+                <!--</div>-->
+                <!--</th:if>-->
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+                <!--<ul>
+                    <li>Go to the <a href="/success" th:href="@{/success}">Success pages</a></li>
+                </ul>
+                <ul>
+                    <li>Go to the <a href="/welcome" th:href="@{/welcome}">Welcome page</a></li>
+                </ul>
+
+                <ul>
+                    <li>Go to the <a href="/user" th:href="@{/user}"> Create New User</a></li>
+                </ul>
+
+                <ul>
+                    <li>Go to the <a href="/userList" th:href="@{/userList}"> User List</a></li>
+                </ul>
+                <ul>
+                    <li>Go to the <a href="/user/getAllUser" th:href="@{/user/getAllUser}">User List Redis Test</a></li>
+                </ul>
+                <ul>
+                    <li>Go to the <a href="/employee/" th:href="@{/employee/}">Employee Test</a></li>
+                </ul>
+                <ul>
+                    <li>Go to the <a href="/employee/report" th:href="@{/employee/report}">Generate Report </a></li>
+                </ul>
+                &lt;!&ndash;<div th:if="${pageContext.request.userPrincipal.name == null}">&ndash;&gt;
+                &lt;!&ndash;<th th:if test="${pageContext.request.userPrincipal.name == null}">&ndash;&gt;
+                <ul>
+                    <li>Go to the <a href="/login" th:href="@{/login}">Log-in page</a></li>
+                </ul>
+
+                <ul>
+                    <li>Go to the <a href="/user" th:href="@{/user}">Sign-up Here</a></li>
+                </ul>
+                &lt;!&ndash;</div>&ndash;&gt;
+                &lt;!&ndash;</th:if>&ndash;&gt;
+
+                <ul>
+                    <li>Click here <a href="/swagger-ui.html" th:href="@{/swagger-ui.html}"> Swagger </a> to show
+                        Swagger
+                        Implementation
+                    </li>
+                </ul>
+                <ul>
+                    <li>Click here <a href="/browser/index.html#/actuator" th:href="@{//browser/index.html#/actuator}">
+                        Actuator </a> to show Actuator
+                        Implementation
+                    </li>
+                </ul>-->
+                <!--<div th:if="${pageContext.request.userPrincipal.name == null}">-->
+                <!--<th:if test="${pageContext.request.userPrincipal.name != null}">-->
+                <form id="logoutForm" method="POST" th:action="@{/logout}">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+                <h2> Welcome
+                    <!--${pageContext.request.userPrincipal.name} | -->
+                    <a onclick="document.forms['logoutForm'].submit()"> <input type="button" value="Logout"/></a>
+                </h2>
+                <!--</div>-->
+                <!--</th:if>-->
+
+                </th>
+            </div>
+        </div>
+        <div th:replace="fragments/footer :: footer">&copy; 2016 The Static Templates</div>
+    </div>
+</div>
+</body>
+</html>

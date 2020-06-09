@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Min Concept Item </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script th:src="@{/assets/js/prescription.js}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
+    <!--Library file for Datatable-->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#itemTable').DataTable({
+                "scrollX": true,
+                "order": [
+                    [1, "asc"]
+                ]
+                // ,"scrollY": 400,
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <h2> API Response - Min Concept Item List</h2>
+    <div class="form-group right-arrow navbar-right">
+        <h5>
+                <span> Prescription: <a th:href="@{/prescription/list}"> Prescription List
+								</a></span>
+        </h5>
+    </div>
+    <div class="box">
+        <div class="box-body">
+            <label style="padding-left: 30%; color: red; align-content: center;" th:if="${error}" th:text="${error}"/>
+            <label style="padding-left: 30%; color: green; align-content: center;" th:if="${success}"
+                   th:text="${success}"/>
+
+            <table id="itemTable"
+                   class="table table-responsive table-striped table-bordered table-hover table-sm"
+                   cellspacing="0" width="100%">
+                <caption class="info"> Min Concept Item List</caption>
+                <thead>
+
+                <tr>
+                    <th class="col-md-1">
+                        Serial
+                    </th>
+                    <th class="col-md-2">
+                        Min Concept  Name
+                    </th>
+
+                    <th class="col-md-2">
+                        Min Concept Rxcui
+                    </th>
+                    <th class="col-md-2">
+                        Min Concept TTY
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item, iter : ${minConceptItemList}">
+                    <td th:text="${iter.count}"></td>
+
+                    <td th:text="${item.getName()}"></td>
+
+                    <td th:text="${item.getRxcui()}"></td>
+
+                    <td th:text="${item.getTty()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<div th:replace="fragments/footer :: footer">&copy; 2020 Prescription project</div>-->
+    </div>
+</div>
+
+</body>
+</html>

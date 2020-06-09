@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prescription List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!--Library file for Datatable-->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#reportTable').DataTable({
+                "scrollX": true,
+                "order": [
+                    [1, "asc"]
+                ]
+                // ,"scrollY": 400,
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <h2>Prescription Table -Prescription List</h2>
+    <div class="form-group right-arrow navbar-right">
+        <h5>
+                <span> Prescription: <a th:href="@{/prescription/list}"> Prescription List
+								</a></span>
+        </h5>
+    </div>
+    <div class="box col-md-12">
+        <div class="box-body">
+            <label style="padding-left: 30%; color: red; align-content: center;" th:if="${error}" th:text="${error}"/>
+            <label style="padding-left: 30%; color: green; align-content: center;" th:if="${success}"
+                   th:text="${success}"/>
+                <table id="reportTable"
+                       class="table-striped table-bordered table-hover table-sm table-responsive"
+                       cellspacing="0" width="100%">
+                    <caption class="info"> Prescription Report List</caption>
+                    <thead>
+
+                    <tr>
+                        <th class="col-md-1" style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Serial
+                        </th>
+                        <th class="col-md-2" style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Prescription Date
+                        </th>
+
+                        <th class="col-md-1" style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Count
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="prescription, iter : ${prescriptionCountReportList}">
+                        <td style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%"
+                                th:text="${iter.count}"></td>
+                        <td style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%"
+                                th:text="${#dates.format(prescription.getPrescriptionDate(), 'dd-MM-yyyy')}">
+                        </td>
+                        <td style="text-align: center; word-break:break-all; padding-left: 0%; padding-right: 0%"
+                                th:text="${prescription.getCount()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+        </div>
+        <div th:replace="fragments/footer :: footer">&copy; 2020 Prescription project</div>
+    </div>
+</div>
+
+</body>
+</html>

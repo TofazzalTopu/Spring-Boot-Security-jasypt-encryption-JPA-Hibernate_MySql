@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title> Create Prescription </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script th:src="@{/assets/js/prescription.js}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
+    <!--Library file for Datatable-->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($(this).prop("checked") == true) {
+                console.log("Checkbox is checked.");
+            }
+            $(".male").click(function () {
+                if ($(this).prop("checked") == true) {
+                    console.log("Checkbox is checked.");
+                    $(".male").prop("checked", true);
+                    $(".female").prop("checked", false);
+                    $("#gender").val("M");
+                } else {
+                    $(".female").prop("checked", true);
+                    $(".male").prop("checked", false);
+                    $("#gender").val("F");
+                }
+            });
+
+            $(".female").click(function () {
+                if ($(this).prop("checked") == true) {
+                    console.log("Checkbox is checked.");
+                    $(".female").prop("checked", true);
+                    $(".male").prop("checked", false);
+                    $("#gender").val("F");
+                } else {
+                    console.log("Checkbox is unchecked.");
+                    $(".female").prop("checked", false);
+                    $(".male").prop("checked", true);
+                    $("#gender").val("M");
+                }
+            });
+
+            $("#patientAge").change(function () {
+                var max = parseInt($(this).attr('max'));
+                var min = parseInt($(this).attr('min'));
+                if ($(this).val() > max) {
+                    $(this).val(max);
+                }
+                else if ($(this).val() < min) {
+                    $(this).val(min);
+                }
+            });
+
+        });
+
+    </script>
+
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+    <div class="content-wrapper">
+
+        <div class="container">
+            <h2>Prescription Form -Create Prescription</h2>
+            <div class="form-group right-arrow navbar-right">
+                <h5>
+                <span> Prescription: <a th:href="@{/prescription/list}"> Prescription List
+								</a></span>
+                </h5>
+            </div>
+            <form id="app" role="form" th:action="@{/prescription/create}" th:object="${prescription}"
+                  method="post">
+                <div class="box-body">
+                    <label style="padding-left: 30%; color: red; align-content: center;" th:if="${error}"
+                           th:text="${error}"/>
+                    <label style="padding-left: 30%; color: green; align-content: center;" th:if="${success}"
+                           th:text="${success}"/>
+
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-4">
+                            <label for="patientName">Patient Name: &nbsp;<span style="color: red;">*</span></label>
+                            <input required type="text" th:field="*{patientName}" name="patientName" id="patientName"
+                                   minlength="3" maxlength="100" class="form-control is-valid"
+                                   autofocus="autofocus" placeholder="Please enter patient name ">
+                            <label th:if="${#fields.hasErrors('patientName')}" th:errors="*{patientName}"
+                                   th:class="'error text-danger'"> Patient Name </label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="patientAge">Patient Age: &nbsp;<span style="color: red;">*</span></label>
+                            <input required type="number" th:field="*{patientAge}" th:id="patientAge" maxlength="100"
+                                   min="0"
+                                   th:max="150" name="patientAge"
+                                   class="form-control" autofocus="autofocus"
+                                   placeholder="Please enter patient age">
+                            <label th:if="${#fields.hasErrors('patientAge')}" th:errors="*{patientAge}"
+                                   th:class="'error'">Patient Age</label>
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="gender">Gender: &nbsp;<span style="color: red;">*</span></label> <br/>
+                            <input required type="hidden" class="gender" th:id="gender" name="gender" value="">
+                            <label class="checkbox-inline"><input type="checkbox" class="male" value="M"> &nbsp; &nbsp;
+                                MALE</label> &nbsp;
+                            &nbsp;
+                            <label class="checkbox-inline"><input type="checkbox" class="female" value="F">&nbsp; &nbsp;
+                                FEMALE</label>
+
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-4">
+                            <label for="diagnosis">Diagnosis: </label>:
+                            <textarea type="text" th:field="*{diagnosis}" th:id="diagnosis" minlength="2"
+                                      maxlength="250"
+                                      name="diagnosis" class="form-control" autofocus="autofocus"
+                                      placeholder="Please enter diagnosis"></textarea>
+                            <label th:if="${#fields.hasErrors('diagnosis')}" th:errors="*{diagnosis}"
+                                   th:class="'error'">Diagnosis</label>
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="medicines">Medicines:  &nbsp;<span style="color: red;">*</span></label>
+                            <textarea required type="text" th:field="*{medicines}" th:id="medicines" minlength="2"
+                                      maxlength="250" name="medicines"
+                                      class="form-control" autofocus="autofocus"
+                                      placeholder="Please enter medicines"></textarea>
+                            <label th:if="${#fields.hasErrors('medicines')}" th:errors="*{medicines}"
+                                   th:class="'error'">Medicines</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="prescriptionDate">Prescription Date: &nbsp;<span
+                                    style="color: red;">*</span></label>
+                            <input required type="date" th:field="*{prescriptionDate}" id="prescriptionDate"
+                                   name="prescriptionDate"
+                                   th:value="${#dates.format(prescription.prescriptionDate, 'yyyy-MM-dd')}"
+                                   class="form-control" autofocus="autofocus">
+                            <label th:if="${#fields.hasErrors('prescriptionDate')}" th:errors="*{prescriptionDate}"
+                                   th:class="'error'">Prescription Date</label>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12">
+                        <div class="form-group col-md-4">
+                            <label for="nextVisitDate">Next Visit Date:</label>
+                            <input type="date" th:field="*{nextVisitDate}" th:id="nextVisitDate" name="nextVisitDate"
+                                   class="form-control" autofocus="autofocus"
+                                   th:value="${#dates.format(prescription.nextVisitDate, 'yyyy-MM-dd')}"
+                                   placeholder="Please enter next visit date">
+                            <label th:if="${#fields.hasErrors('nextVisitDate')}" th:errors="*{nextVisitDate}"
+                                   th:class="'error'">Next Visit Date</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row col-md-12">
+                    <div class="form-group col-md-4">
+                        <div class="box-footer">
+                            <button type="submit" name="submit" th:id="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--<div th:replace="fragments/footer :: footer">&copy; 2020 Prescription project</div>-->
+
+        </div>
+    </div>
+</body>
+</html>

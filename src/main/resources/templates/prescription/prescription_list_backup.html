@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prescription List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!--Library file for Datatable-->
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+    <!--
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <script th:src="@{/assets/js/prescription.js}"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    -->
+
+    <style type="text/css">
+        #overlay {
+            background: #ffffff;
+            color: #666666;
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            z-index: 5000;
+            top: 0;
+            left: 0;
+            float: left;
+            text-align: center;
+            padding-top: 25%;
+        }
+
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:after,
+        table.dataTable thead .sorting_desc_disabled:before {
+            bottom: .5em;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#prescriptionTable').DataTable({
+                "scrollX": true,
+                "order": [
+                    [1, "desc"]
+                ]
+                // ,"scrollY": 400,
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<div class="content-wrapper">
+    <div id="overlay">
+        <img th:src="@{/assets/img/loader.gif}" width="100px"> Loading...
+    </div>
+
+    <div class="container">
+
+        <h2>Prescription Table -Prescription List</h2>
+        <div class="form-group right-arrow navbar-right">
+            <h5>
+                <span> Prescription: <a th:href="@{/prescription/createForm}"> Create Prescription
+								</a></span>
+            </h5>
+        </div>
+        <p style="text-align: center">Date Range Query: <input id="pmsDateRangePicker" readonly="readonly"></p>
+
+        <div class="box">
+            <div class="box-body">
+                <label style="padding-left: 30%; color: red; align-content: center;" th:if="${error}"
+                       th:text="${error}"/>
+                <label style="padding-left: 30%; color: green; align-content: center;" th:if="${success}"
+                       th:text="${success}"/>
+
+                <table id="prescriptionTable"
+                       class="table table-striped table-bordered table-hover table-sm table-responsive"
+                       cellspacing="0" width="100%">
+                    <caption class="info"> Prescription List</caption>
+                    <thead>
+
+                    <tr>
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 5%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Serial
+                        </th>
+                        <th hidden
+                            style="text-align: center; max-width: 2%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            ID
+                        </th>
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 5%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Action
+                        </th>
+
+                        <th class="col-md-2"
+                            style="text-align: center; max-width: 5%; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Patient Name
+                        </th>
+
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Gender
+                        </th>
+
+                        <th style="text-align: center; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Patient Age
+                        </th>
+
+                        <th class="col-md-2 column-resize-line"
+                            style="text-align: center; max-width: 10%;  word-wrap: break-word;  word-break:break-all;  padding-left: 0%; padding-right: 0%">
+                            Diagnosis
+                        </th>
+                        <th class="col-md-2"
+                            style="text-align: center; max-width: 10%;   word-wrap: break-word;  word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Medicines
+                        </th>
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Prescription Date
+                        </th>
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Next Visit Date
+                        </th>
+                        <th class="col-md-1"
+                            style="text-align: center; max-width: 10%; word-break:break-all; padding-left: 0%; padding-right: 0%">
+                            Create Date
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="prescription, iter : ${prescriptionList}">
+                        <td style="text-align: center; word-wrap: break-word; word-break:break-all; padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${iter.count}"></td>
+
+                        <td hidden style="text-align: center; word-wrap: break-word; word-break:break-all; padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${prescription.getId()}"></td>
+                        <td style="text-align: center;">
+                            <a th:href="@{/prescription/viewDetails/{id}(id=${prescription.getId()})}"  title="View"
+                               class="btn btn-xs btn-success"> <i class="fa fa-eye"></i></a>
+                            <span>
+                                <a th:href="@{/prescription/delete/{id}(id=${prescription.getId()})}" title="Delete" onclick="return confirm(' Are you sure you want to delete?');"
+                                   class="btn btn-xs btn-warning" > <span class="glyphicon glyphicon-off"></span> </a>
+                            </span>
+                        </td>
+
+                        <td style="text-align: center; word-wrap: break-word; word-break:break-all; padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${prescription.getPatientName()}"></td>
+                        <div th:switch="${prescription.getGender()}">
+                            <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                                th:case="'M'">Male
+                            </td>
+                            <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                                th:case="'F'"> Female
+                            </td>
+                        </div>
+
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all; padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${prescription.getPatientAge()}"></td>
+
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${prescription.getDiagnosis()}"></td>
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${prescription.getMedicines()}"></td>
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${#dates.format(prescription.getPrescriptionDate(), 'dd-MM-yyyy')}">
+                        </td>
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${#dates.format(prescription.getNextVisitDate(), 'dd-MM-yyyy')}">
+                        </td>
+                        <td style="text-align: center; max-width: 10%; word-wrap: break-word; word-break:break-all;  padding-left: 0.5%; padding-right: 0.5%"
+                            th:text="${#dates.format(prescription.getCreateDate(), 'dd-MM-yyyy')}">
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
