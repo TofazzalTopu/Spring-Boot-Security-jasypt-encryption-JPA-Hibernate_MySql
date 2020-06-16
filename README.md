@@ -1,6 +1,18 @@
 # Project Title
 
-## Sample Spring Boot application for Prescription Entry
+## Technology Stacks implemented in this project:
+* Spring Boot 2+.
+* Spring Security with BCryptPasswordEncoder().
+* Spring Data JPA 2+.
+* Hibernate -5.
+* Rest Api End-Point.
+* Consume Rest Api.
+* Rest Api Documentation using Swagger.
+* Jasypt encryption for security purpose of database credentials (Like database name, username, password, smtp etc) and other any credentials using jasypt encryption. And encryption-decryption during storing and retreiving data in DB.
+* MySql.
+
+
+## Sample Spring Boot application for Prescription Entry:
 * Project home url: http://localhost:8080/login
 * Create User using Create user form (There is a register here link in login form).
 * During user creation encrypted password will be  stored in DB.
